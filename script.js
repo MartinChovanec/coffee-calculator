@@ -116,9 +116,9 @@ const isSunRise = async () => {
         const position = await new Promise((resolve, reject) =>
             navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 })
         );
-
+        const now = new Date();
         const response = await fetch(
-            `https://api.sunrise-sunset.org/json?lat=${position.coords.latitude}&lng=${position.coords.longitude}&formatted=0`
+            `https://api.sunrise-sunset.org/json?lat=${position.coords.latitude}&lng=${position.coords.longitude}&date=${now.toDateString()}&formatted=0`
         );
         if (!response.ok) {
             await Promise.reject("not ok");
@@ -127,7 +127,6 @@ const isSunRise = async () => {
 
         const sunrise = new Date(jsonResponse.results.sunrise);
         const sunset = new Date(jsonResponse.results.sunset);
-        const now = new Date();
         const hours = now.getHours();
 
         if (now < sunrise) {
